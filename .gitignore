@@ -5,8 +5,6 @@
 #...except the gitignore
 !\.gitignore
 #(becuase I don't like rewriting the gitignore on every system)
-#we'll also keep the .git directory, because I dunno, reasons?
-!\.git
 
 #but make super sure to ignore webadmin's .gitconfig
 .gitconfig
