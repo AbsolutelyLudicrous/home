@@ -13,3 +13,8 @@
 private
 #also sometimes I end files with ".private", so let's ignore those too
 *\.private
+
+#ignore the apcahe24 default errors directory
+error
+#and ignore lockfiles/configfiles
+lockfiles
