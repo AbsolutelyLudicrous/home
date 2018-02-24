@@ -1,0 +1,17 @@
+#important to remember:
+#the webserver directory is also the home directory of the "webadmin" user
+#so we ignore their dotfiles
+\.*
+#...except the gitignore
+!\.gitignore
+#(becuase I don't like rewriting the gitignore on every system)
+#we'll also keep the .git directory, because I dunno, reasons?
+!\.git
+
+#but make super sure to ignore webadmin's .gitconfig
+.gitconfig
+
+#we'll also ignore any directory called "private", which stores stuff like databases and logins
+private
+#also sometimes I end files with ".private", so let's ignore those too
+*\.private
