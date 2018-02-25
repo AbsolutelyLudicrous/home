@@ -1,1 +1,1 @@
-index-footer.php
+../index-footer.php

@@ -24,6 +24,6 @@ lockfiles
 node_modules
 
 #my blog doesn't belong on Github, so let's ignore that
-blag\.d/*
+blag\.d
 #but the index files might
 !blag\.d/index*\.php
