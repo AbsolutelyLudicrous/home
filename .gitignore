@@ -22,3 +22,6 @@ lockfiles
 #also we have node installed here, for wetty
 #so let's ignore node_modules, because size constraints
 node_modules
+
+#y'alls don't need my blog
+data/blag\.d
