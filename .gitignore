@@ -23,7 +23,6 @@ lockfiles
 #so let's ignore node_modules, because size constraints
 node_modules
 
-<<<<<<< HEAD
 #my blog doesn't belong on Github, so let's ignore that
 blag\.d
 #but the index files might
@@ -34,4 +33,6 @@ data/blag\.d
 
 #don't track configuration files
 *\.conf
->>>>>>> dev
+
+#don't track blatt's config file
+blattconf\.py
