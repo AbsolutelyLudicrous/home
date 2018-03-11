@@ -1,0 +1,13 @@
+/usr/bin/env python3
+#example blatt configuration file
+#just stores variables to be run through python
+#just remove the trailing .example file extension
+
+ck=consumer_key
+cs=consumer_secret
+ot=oauth_token
+os=oath_secret
+
+blog=blogname.tumblr.com
+
+blagdir=/path/to/blag
