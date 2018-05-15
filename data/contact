@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<h2>Contact me!</h2>
+<hr>
+<ul>
+	<dt>Email:	<a href="mailto://eostre.danne@protonmail.com">eostre.danne@protonmail.com</a></dt>
+		<dd><i>Personal email address
+		</i></dd><br>
+	<dt>GitHub:	<a href="https://github.com/AbsolutelyLudicrous/">AbsolutelyLudicrous</a></dt>
+		<dd><i>Technical nonsense, if you want to see my (bad) code
+		</i></dd><br>
+	<dt>Mastodon:	<a href="https://lgbt.io/@danne">@danne@lgbt.io</a></dt>
+		<dd><i>Short thought blurbs from the top of my head
+		</i></dd><br>
+	<dt>Telegram:	<a href="https://t.me/eostred">@eostred</a></dt>
+		<dd><i>Emergency contact line
+		</i></dd><br>
+	<dt>Tumblr:	<a href="https://eostred.tumblr.com">eostred</a></dt>
+		<dd><i>Cross-posts my personal blog, which can be found on <a href="/blag.d">this site</a>
+		</i></dd><br>
+	<dt>Twitter:	<a href="https://twitter.com/KindaLudicrous">@KindaLudicrous</a></dt>
+		<dd><i>Cross-posts my stuff from Mastodon, somewhat buggy
+		</i></dd><br>
+	<dt>Website:	<a href="/">danne.site</a>
+		<dd><i>Nerdery, thoughts, rants, fiction; my weird stuff
+		</i></dd><br>
+</ul>
+<hr>
+<a href="/">main site</a>

@@ -1,0 +1,42 @@
+<h1>systemd is an init system</h1>
+<h1>init is pid 1</h1>
+<hr>
+If you don't know or care to know what that means, this is not the blag post for you.
+<hr>
+An init is the program loaded which launches all other programs.
+The login manager is started by init, the desktop server is started by init, the date/time daemon is started by init, the cron scheduling daemon is started by init, <i>anything which starts when you power on your computer is started by init</i>.
+Traditionally, init only manages these low-level system programs, called daemons or services.
+init also manages which daemons run at startup and can start and stop daemons at runtime.
+<br>
+Example invocations of init control, in this case using FreeBSD's `service`, are as such:
+<br>
+<pre>
+        root@freebsd:~ # echo "ntpd_enabled=\"YES\"" >> /etc/rc.conf    #enable the NTP daemon by appending a line to rc.conf
+        root@freebsd:~ # service ntpd start                             #starts the NTP, Network Time Protocol, daemon if enabled in /etc/rc.conf
+        root@freebsd:~ # service ntpd onestart                          #starts the NTP daemon even if not enabled
+        root@freebsd:~ # service ntpd stop                              #stop the NTP daemon if started
+        tree@freebsd:~ $ service -l                                     #list all services/daemons, note that this can be done without root privelages
+</pre>
+Or, by using systemd:
+<pre>
+        root@distro:~ # systemctl enable ntpd           #enable the NTP daemon
+        root@distro:~ # systemctl start ntpd            #start the NTP daemon, even if not enabled at startup
+        root@distro:~ # systemctl stop ntpd             #stop the NTP daemon
+        tree@distro:~ $ systemctl list-unit-files       #list all available services and status, again does not require root
+</pre>
+<br>
+Nifty, right?
+<hr>
+But systemd does so much more for you.
+systemd automatically handles system logging, device node management, time syncronization, user logins, event scheduling, and local domain resolution.
+systemd abstracts away from the distro maintainers many low-level and unstable functions, leaving the maintainers more time to do important OS maintenance and development.
+Things the developers don't have to worry about don't cause problems for the developers, and it's important to have happy devs.
+<hr>
+Happy devs write more code and write better code.
+<br>
+Love your devs, make them happy.
+Don't give them more work to do.
+<br>
+Accept the monolithic systemd into your distro.
+<hr>
+<h3>Use systemd, love your devs</h3>

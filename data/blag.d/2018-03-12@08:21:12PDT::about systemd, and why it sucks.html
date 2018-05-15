@@ -1,0 +1,108 @@
+(caution: lots of swears near the end)
+<hr>
+<h1>systemd is an init system</h1>
+<h1>init is pid 1</h1>
+<hr>
+If you don't know or care to know what that means, this is not the blag post for you.
+<hr>
+An init is the program loaded which launches all other programs.
+The login manager is started by init, the desktop server is started by init, the date/time daemon is started by init, the cron scheduling daemon is started by init, <i>anything which starts when you power on your computer is started by init</i>.
+Traditionally, init only manages these low-level system programs, called daemons or services.
+init also manages which daemons run at startup and can start and stop daemons at runtime.
+<br>
+Example invocations of init control, in this case using FreeBSD's `service`, are as such:
+<br>
+<pre>
+	root@freebsd:~ # echo "ntpd_enabled=\"YES\"" >> /etc/rc.conf	#enable the NTP daemon by appending a line to rc.conf
+	root@freebsd:~ # service ntpd start				#starts the NTP, Network Time Protocol, daemon if enabled in /etc/rc.conf
+	root@freebsd:~ # service ntpd onestart				#starts the NTP daemon even if not enabled
+	root@freebsd:~ # service ntpd stop				#stop the NTP daemon if started
+	tree@freebsd:~ $ service -l					#list all services/daemons, note that this can be done without root privelages
+</pre>
+Or, by using systemd:
+<pre>
+	root@distro:~ # systemctl enable ntpd		#enable the NTP daemon
+	root@distro:~ # systemctl start ntpd		#start the NTP daemon, even if not enabled at startup
+	root@distro:~ # systemctl stop ntpd		#stop the NTP daemon
+	tree@distro:~ $ systemctl list-unit-files	#list all available services and status, again does not require root
+</pre>
+<hr>
+No far, nothing bad, right?
+Sure, the syntax is a bit different, but that's not a bad thing.
+<br>
+The problem is that systemd does so much more than init.
+Searching every process on my Solus system returned the following:
+<pre>
+$ ps aux | grep -ie systemd
+root         1  0.0  0.0 162364  7120 ?        Ss   19:23   0:01 /usr/lib/systemd/systemd --switched-root --system --deserialize 31
+root       432  0.0  0.1  45156 13464 ?        Ss   19:23   0:00 /usr/lib/systemd/systemd-journald
+root       449  0.0  0.0  16668  5404 ?        Ss   19:23   0:00 /usr/lib/systemd/systemd-udevd
+systemd+   671  0.0  0.0  86372  4732 ?        Ssl  19:23   0:00 /usr/lib/systemd/systemd-timesyncd
+message+   696  0.0  0.0   6584  4664 ?        Ss   19:23   0:01 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation
+root       702  0.0  0.0  12444  4800 ?        Ss   19:23   0:01 /usr/lib/systemd/systemd-logind
+systemd+   723  0.0  0.0  12464  4236 ?        Ss   19:23   0:00 /usr/lib/systemd/systemd-resolved
+danne     1071  0.0  0.0  14584  6820 ?        Ss   19:27   0:00 /usr/lib/systemd/systemd --user
+</pre>
+There's a PID 1 in there, no problem with that, but what are these other processes systemd is running?
+<br>
+systemd is PID 1, and some other stuff.
+systemd handles, among other things:
+system logging, monitoring daemons;
+device node management, ensuring that the system can see things plugged into it, see `man hier | grep -B 2 -A 32 -ie "/dev" | less` for more;
+time syncronization, making sure that the system's time is correct;
+logging in, including seizing control of TTYs;
+and domain name resolution, making sure that IP addresses on the local network get turned into hostnames.
+<br>
+And holy shit is that a fuckton.
+What the hell do you mean, my init has taken over some kernel-level functions and can perform networking on its own!?
+<br>
+Traditionally, each of those tasks would be left to an individual program.
+System logging would be managed be the daemon itself,
+devices nodes would be handled by (e)udev or hal or anything but init,
+time is handled by NTPD,
+logins are handled by the `login` program and TTYs are handled by the kernel,
+domain names and networking are handled by BIND or unbound and wpa_supplicant.
+<hr>
+<h2>So what the heck is init, the program which is solely responsible for starting a few daemons and then fucking off, doing managing all that?</h2>
+(The answer: scope creep.)
+<br>
+Now I hear you thinking, "So what if it handles a lot?, why's that my problem?"
+<br>
+It's a problem because having one thing handle a bunch of different tasks is setting yourself up for failure.
+In systemd, if the time sync daemon has a flaw then so does the TTY layer, and the login manager, and the device node manager.
+Each part is largely unrelated to the others, but will get borked all the same.
+And that sucks.
+<br>
+This isn't purely hypothetical, either, take the time that <a href="https://news.ycombinator.com/item?id=14682210">systemd had a bug which gave users who started their names with digits root access</a>.
+<br>
+Think on that.
+A flaw in init crtically compromised millions of computers.
+<h3>What the fuck?</h3>
+And the problem doesn't stop there, Lennart Poettering, the lead developer, dismissed the problem, because another """feature""" of systemd is that names should't start with numbers.
+Problem solved, right?
+But then you have to wonder,
+<h3>Why does init get to decide what names are valid?</h3>
+Because seriously, what the fuck?
+This screws over legacy systems, for one thing, and for another thing it disallows users to use arbitrary characters in their names as may be desired by non-English users, but mostly <b>it's out of the scope of init</b>.
+<hr>
+Troublingly, it also tells us that the mindset of systemd is "Our way or the highway".
+<br>
+init is PID 1, PID 1 is init.
+Once init creeps beyond PID 1, it becomes nigh impossible to switch software.
+So much stuff depends on systemd that it becomes a herculean feat to move away from it.
+Even systemd-free operating systemds, such as Artix Linux, often have to ship a "dummy" version of systemd to make programs compiled against systemd happy.
+<br>
+And, as we learned from Poettering's response to the digit-leading-name fiasco, the developers believe that they are more knowledgable than us users and will force us to use a workflow that they have deemed to be """best""".
+systemd will force you into a certain workflow, even if your use case could be better served by doing something else.
+And you know what?
+<br>
+<b>Fuck that.</b>
+<br>
+<h3>It is the very spirit of Unix to be able to tweak your system to your use case.</h3>
+To force users into one workflow, to have one program manage several system-critical functions, to override parts of the kernel, is anti-Unix.
+systemd is anti-Unix.
+systemd robs you of choice.
+<h2>systemd is anti-Unix</h2>
+<hr>
+Next up on the docket:
+Why systemd is good, about my sexuality, and maybe some cool space stuff.
