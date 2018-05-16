@@ -1,18 +1,8 @@
 #!/usr/bin/env sh
 #Simple blagging functions
 
-
-alias "clipost"="/usr/local/www/apache24/data/technical.d/blaTT-daemon.d/blatt.py"
-
-function blatt(){
-	#manually post to Tumblr
-	/usr/local/www/apache24/data/technical.d/blaTT-daemon.d/blatt.py	\
-		"$1"								\
-		$(cat $1)
-}
-
 function blag(){
-	title="/usr/local/www/apache24/data/blag.d/$(date +%F@%T%Z)::$@"
+	title="./$(date +%F@%T%Z)::$@"
 	$EDITOR $title.html
 	if grep $title.html -ve NOCROSSPOST; then
 		/usr/local/www/apache24/data/technical.d/blaTT-daemon.d/blatt.py	\
@@ -23,5 +13,5 @@ function blag(){
 
 function rant(){
 	#like blag, but more bitchy and also doesn't get sent to Tumblr
-	$EDITOR "/usr/local/www/apache24/data/blag.d/rants.d/$(date +%F@%T%Z)::$@".html
+	$EDITOR "./rants.d/$(date +%F@%T%Z)::$@".html
 }
