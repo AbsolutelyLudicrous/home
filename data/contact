@@ -3,7 +3,13 @@
 <hr>
 <ul>
 	<dt>Email:	<a href="mailto://eostre.danne@protonmail.com">eostre.danne@protonmail.com</a></dt>
-		<dd><i>Personal email address
+		<dd><i>Personal email address [DEPRECATION UPCOMING: Self-hosting is more fun]
+		</i></dd><br>
+	<dt>Email:	<a href="mailto://eostre@danne.site">eostre@danne.site</a></dt>
+		<dd><i>Personal email address, experimental self-hosted
+		</i></dd><br>
+	<dt>Email:	<a href="mailto://employme@danne.site">employme@danne.site</a></dt>
+		<dd><i>Have a job offer in the Columbus region, or something where remote work is an option? I'm available!
 		</i></dd><br>
 	<dt>GitHub:	<a href="https://github.com/AbsolutelyLudicrous/">AbsolutelyLudicrous</a></dt>
 		<dd><i>Technical nonsense, if you want to see my (bad) code
